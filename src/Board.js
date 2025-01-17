@@ -1,19 +1,26 @@
 import {useState} from 'react';
+import Glass from './glass.png';
+import X from './x.png';
+import O from './o.png';
 
-function Square ({ value, onSquareClick }) {
+function Square ({ className, value, onSquareClick }) {
+  let glass = Glass;
+  if (value === "X") glass = X;
+  if (value === "O") glass = O;
   return (
-    <button
-      className="square"
+    <div
+      className={`square ${className}`}
       onClick={onSquareClick}
     >
-      {value}
-    </button>
+      <img src={glass} className="glass"/>
+    </div>
   );
 }
 
 function Board() {
   const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
   function handleClick(i) {
@@ -34,30 +41,37 @@ function Board() {
   if (winner) status = "Winner: " + winner;
 
   return (
-    <>
+    <div className="board">
       <div className="status">{status}</div>
       <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+        <Square className="three" value={squares[0]} onSquareClick={() => handleClick(0)} />
+        <Square className="one" value={squares[1]} onSquareClick={() => handleClick(1)} />
+        <Square className="four" value={squares[2]} onSquareClick={() => handleClick(2)} />
       </div>
       <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+        <Square className="five" value={squares[3]} onSquareClick={() => handleClick(3)} />
+        <Square className="two" value={squares[4]} onSquareClick={() => handleClick(4)} />
+        <Square className="three" value={squares[5]} onSquareClick={() => handleClick(5)} />
       </div>
       <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+        <Square className="two" value={squares[6]} onSquareClick={() => handleClick(6)} />
+        <Square className="four" value={squares[7]} onSquareClick={() => handleClick(7)} />
+        <Square className="six" value={squares[8]} onSquareClick={() => handleClick(8)} />
       </div>
-      {winner && (
+      { (winner || full) && (
         <button className="restart" onClick={handleRestart}>
           Restart
         </button>
       )}
-    </>
+    </div>
   );
+}
+
+function isBoardFull(squares) {
+  for (let i = 0; i < squares.length; i++) {
+    if (squares[i] === null || 'undefined' === typeof squares[i]) return false;
+  }
+  return true;
 }
 
 function calculateWinner(squares) {

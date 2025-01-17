@@ -1,9 +1,9 @@
 import Board from './Board';
 import './styles.css';
 
-export default function Game() {
+export default function App() {
   return (
-    <div className="game-board">
+    <div className="page">
       <Board />
     </div>
   );
