@@ -12,6 +12,7 @@ function Game() {
   const [usersTurn, setUsersTurn] = useState(true);
   const [firstMove, setFirstMove] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [showRestart, setShowRestart] = useState(false);
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
@@ -27,6 +28,7 @@ function Game() {
     setSquares(Array(9).fill(null));
     setUsersTurn(true);
     setFirstMove(true);
+    setShowRestart(false);
   }
 
   function computersTurn() {
@@ -73,6 +75,16 @@ function Game() {
     }
   }, [usersTurn, squares, winner, full]);
 
+  useEffect(() => {
+    if (winner || full) {
+      const timer = setTimeout(() => {
+        setShowRestart(true);
+      }, 800);
+
+      return () => clearTimeout(timer);
+    }
+  }, [winner, full]);
+
   return (
     <div className="board">
       <div className="board-row">
@@ -90,7 +102,7 @@ function Game() {
         <Square index={7} value={squares[7]} onSquareClick={() => handleClick(7)} />
         <Square index={8} value={squares[8]} onSquareClick={() => handleClick(8)} />
       </div>
-      { (winner || full) && (
+      { (winner || full) && showRestart && (
         <button className="restart" onClick={handleRestart}>
           Restart
         </button>
