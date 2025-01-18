@@ -1,23 +1,16 @@
 import { useState, useEffect } from 'react';
 import Square from './Square';
-
-const winPaths = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6]
-];
-
-let status;
+import { 
+  getFirstMove, 
+  win, 
+  block, 
+  isBoardFull, 
+  calculateWinner 
+} from './GameFunctions'
 
 function Game() {
   const [usersTurn, setUsersTurn] = useState(true);
   const [firstMove, setFirstMove] = useState(true);
-  const [sequence, setSequence] = useState(null);
   const [squares, setSquares] = useState(Array(9).fill(null));
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
@@ -43,9 +36,7 @@ function Game() {
 
     // first move, decide sequence to win or draw based on users first move
     if (firstMove) {
-      const[space, option] = getFirstMove(squares);
-      chosenSpace = space;
-      setSequence(option);
+      chosenSpace = getFirstMove(squares);
       setFirstMove(false);
     }
 
@@ -82,11 +73,8 @@ function Game() {
     }
   }, [usersTurn, squares, winner, full]);
 
-  if (winner) status = "Winner: " + winner;
-
   return (
     <div className="board">
-      <div className="status">{status}</div>
       <div className="board-row">
         <Square index={0} value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square index={1} value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -109,83 +97,6 @@ function Game() {
       )}
     </div>
   );
-}
-
-function getFirstMove(squares) {
-  const xMove = squares.indexOf("X");
-
-  // if x is in the center, start in the corner
-  if (xMove === 4) {
-    status = "x in center, start in corner"
-    const corners = [0, 2, 6, 8];
-    return [corners[Math.floor(Math.random() * 4)], 0];
-
-  // if x is in a corner, start in the center
-  } else if (xMove === 0 || xMove === 2 || xMove === 6 || xMove === 8) {
-    status = "x in corner, start in center"
-    return [4, 1];
-  
-  // if x is on an edge that isn't a corner, start in the center
-  } else {
-    status = "x on edge, start in center"
-    return [4, 2];
-  }
-}
-
-function win(squares) {
-  for (let i = 0; i < winPaths.length; i++) {
-    const [a, b, c] = winPaths[i];
-    if ( squares[a] === "O" && squares[b] === "O" && squares[c] !== "X" ) {
-      status = `Winning path: ${winPaths[i]} - O O _`;
-      return c;
-    }
-    if ( squares[b] === "O" && squares[c] === "O" && squares[a] !== "X" ) {
-      status = `Winning path: ${winPaths[i]} - _ O O`;
-      return a;
-    }
-    if ( squares[c] === "O" && squares[a] === "O" && squares[b] !== "X" ) {
-      status = `Winning path: ${winPaths[i]} - O _ O`;
-      return b;
-    }
-  }
-  return null
-}
-
-function block(squares) {
-  for (let i = 0; i < winPaths.length; i++) {
-    const [a, b, c] = winPaths[i];
-    if ( squares[a] === "X" && squares[b] === "X" && squares[c] !== "O" ) {
-      status = `Blocking path: ${winPaths[i]} - X X _`;
-      return c;
-    }
-    if ( squares[b] === "X" && squares[c] === "X" && squares[a] !== "O" ) {
-      status = `Blocking path: ${winPaths[i]} - _ X X`;
-      return a;
-    }
-    if ( squares[c] === "X" && squares[a] === "X" && squares[b] !== "O" ) {
-      status = `Blocking path: ${winPaths[i]} - X _ X`;
-      return b;
-    }
-  }
-  status = "no block or win found"
-  return null;
-}
-
-function isBoardFull(squares) {
-  for (let i = 0; i < squares.length; i++) {
-    if (squares[i] === null || 'undefined' === typeof squares[i]) return false;
-  }
-  return true;
-}
-
-function calculateWinner(squares) {
-  for (let i = 0; i < winPaths.length; i++) {
-    const [a, b, c] = winPaths[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
 }
 
 export default Game;
