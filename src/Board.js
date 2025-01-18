@@ -3,6 +3,19 @@ import Glass from './glass.png';
 import X from './x.png';
 import O from './o.png';
 
+const winPaths = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+];
+
+let status;
+
 function Square ({ className, value, onSquareClick }) {
   let glass = Glass;
   if (value === "X") glass = X;
@@ -25,7 +38,7 @@ function Board() {
 
   function handleClick(i) {
     if (!usersTurn || squares[i] || winner) return;
-    const newSquares = [...squares]; // Create a copy of the squares array
+    const newSquares = [...squares]; 
     newSquares[i] = "X";
     setSquares(newSquares);
     setUsersTurn(false);
@@ -37,12 +50,22 @@ function Board() {
   }
 
   function computersTurn() {
-    let availableSpaces = squares
+    if (usersTurn || winner) return;
+
+    let chosenSpace = win(squares);
+
+    // try to block X if O can not win
+    if (!chosenSpace) chosenSpace = block(squares);
+
+    // get random space if there is no way to win or block X
+    if (!chosenSpace) {
+      let availableSpaces = squares
       .map((value, index) => (value === undefined || value === null ? index : null))
       .filter(index => index !== null);
+      chosenSpace = availableSpaces[Math.floor(Math.random() * availableSpaces.length)];
+    }
 
-    const chosenSpace = availableSpaces[Math.floor(Math.random() * availableSpaces.length)];
-    const newSquares = [...squares]; // Create a copy of the squares array
+    const newSquares = [...squares];
     newSquares[chosenSpace] = "O";
     setSquares(newSquares);
     setUsersTurn(true);
@@ -58,8 +81,7 @@ function Board() {
     }
   }, [usersTurn, squares, winner, full]);
 
-  let status;
-  if (winner) status = "Winner: " + winner;
+  //if (winner) status = "Winner: " + winner;
 
   return (
     <div className="board">
@@ -88,6 +110,45 @@ function Board() {
   );
 }
 
+function win(squares) {
+  for (let i = 0; i < winPaths.length; i++) {
+    const [a, b, c] = winPaths[i];
+    if ( squares[a] === "O" && squares[b] === "O" && squares[c] !== "X" ) {
+      status = `Winning path: ${winPaths[i]} - O O _`;
+      return c;
+    }
+    if ( squares[b] === "O" && squares[c] === "O" && squares[a] !== "X" ) {
+      status = `Winning path: ${winPaths[i]} - _ O O`;
+      return a;
+    }
+    if ( squares[c] === "O" && squares[a] === "O" && squares[b] !== "X" ) {
+      status = `Winning path: ${winPaths[i]} - O _ O`;
+      return b;
+    }
+  }
+  return null
+}
+
+function block(squares) {
+  for (let i = 0; i < winPaths.length; i++) {
+    const [a, b, c] = winPaths[i];
+    if ( squares[a] === "X" && squares[b] === "X" && squares[c] !== "O" ) {
+      status = `Blocking path: ${winPaths[i]} - X X _`;
+      return c;
+    }
+    if ( squares[b] === "X" && squares[c] === "X" && squares[a] !== "O" ) {
+      status = `Blocking path: ${winPaths[i]} - _ X X`;
+      return a;
+    }
+    if ( squares[c] === "X" && squares[a] === "X" && squares[b] !== "O" ) {
+      status = `Blocking path: ${winPaths[i]} - X _ X`;
+      return b;
+    }
+  }
+  status = "no block or win found"
+  return null;
+}
+
 function isBoardFull(squares) {
   for (let i = 0; i < squares.length; i++) {
     if (squares[i] === null || 'undefined' === typeof squares[i]) return false;
@@ -96,17 +157,6 @@ function isBoardFull(squares) {
 }
 
 function calculateWinner(squares) {
-  const winPaths = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-
   for (let i = 0; i < winPaths.length; i++) {
     const [a, b, c] = winPaths[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
