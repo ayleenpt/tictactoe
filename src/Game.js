@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
-import Glass from './glass.png';
-import X from './x.png';
-import O from './o.png';
+import One from './assets/one.png';
+import Two from './assets/two.png';
+import Three from './assets/three.png';
+import Four from './assets/four.png';
+import Five from './assets/five.png';
+import Six from './assets/six.png';
+import Seven from './assets/seven.png';
+import Eight from './assets/eight.png';
+import Nine from './assets/nine.png';
 
 const winPaths = [
   [0, 1, 2],
@@ -14,23 +20,32 @@ const winPaths = [
   [2, 4, 6]
 ];
 
+const backgrounds = [
+  One, Two, Three, Four, Five, Six, Seven, Eight, Nine
+]
+
+const Xs = [
+  
+]
+
+const Os = [
+
+]
+
 let status;
 
-function Square ({ className, value, onSquareClick }) {
-  let glass = Glass;
-  if (value === "X") glass = X;
-  if (value === "O") glass = O;
+function Square ({ index, value, onSquareClick }) {
   return (
     <div
-      className={`square ${className}`}
+      className={'square'}
       onClick={onSquareClick}
     >
-      <img src={glass} alt="glass" className="glass"/>
+      <img src={backgrounds[index]} alt="glass" className="square-bg"/>
     </div>
   );
 }
 
-function Board() {
+function Game() {
   const [usersTurn, setUsersTurn] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
   const full = isBoardFull(squares);
@@ -87,19 +102,19 @@ function Board() {
     <div className="board">
       <div className="status">{status}</div>
       <div className="board-row">
-        <Square className="three" value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square className="one" value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square className="four" value={squares[2]} onSquareClick={() => handleClick(2)} />
+        <Square index={0} value={squares[0]} onSquareClick={() => handleClick(0)} />
+        <Square index={1} value={squares[1]} onSquareClick={() => handleClick(1)} />
+        <Square index={2} value={squares[2]} onSquareClick={() => handleClick(2)} />
       </div>
       <div className="board-row">
-        <Square className="five" value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square className="two" value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square className="three" value={squares[5]} onSquareClick={() => handleClick(5)} />
+        <Square index={3} value={squares[3]} onSquareClick={() => handleClick(3)} />
+        <Square index={4} value={squares[4]} onSquareClick={() => handleClick(4)} />
+        <Square index={5} value={squares[5]} onSquareClick={() => handleClick(5)} />
       </div>
       <div className="board-row">
-        <Square className="two" value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square className="four" value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square className="six" value={squares[8]} onSquareClick={() => handleClick(8)} />
+        <Square index={6} value={squares[6]} onSquareClick={() => handleClick(6)} />
+        <Square index={7} value={squares[7]} onSquareClick={() => handleClick(7)} />
+        <Square index={8} value={squares[8]} onSquareClick={() => handleClick(8)} />
       </div>
       { (winner || full) && (
         <button className="restart" onClick={handleRestart}>
@@ -166,4 +181,4 @@ function calculateWinner(squares) {
   return null;
 }
 
-export default Board;
+export default Game;

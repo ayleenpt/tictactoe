@@ -21,8 +21,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #d9d9d9;
-  border: 5px solid #d9d9d9;
+  background-color: #591300;
+  border: 5px solid #4b1000;
 }
 
 .board-row {
@@ -48,83 +48,10 @@
   border: none;
 }
 
-.one {
-  background: radial-gradient(
-    #ddb6e3 10%,
-    #d7a7d9 30%,
-    #ba7abb 70%,
-    #ac6cae 76%,
-    #a664a2 90%,
-    #9a5b9c 94%
-  );
-  box-shadow: inset 0 0 30px 10px #852d88;
-}
-
-.two {
-  background: radial-gradient(
-    #b6e3e1 10%,
-    #a7d9d3 30%,
-    #7abbb2 70%,
-    #6caeae 76%,
-    #64a0a6 90%,
-    #5b9c9a 94%
-  );
-  box-shadow: inset 0 0 30px 10px #277270;
-}
-
-.three {
-  background: radial-gradient(
-    #c5e3b6 10%,
-    #b8d9a7 30%,
-    #91bb7a 70%,
-    #83ae6c 76%,
-    #7ba664 90%,
-    #729c5b 94%
-  );
-  box-shadow: inset 0 0 30px 10px #496b37;
-}
-
-.four {
-  background: radial-gradient(
-    #b6bee3 10%,
-    #a7a9d9 30%,
-    #7a7dbb 70%,
-    #6c80ae 76%,
-    #6471a6 90%,
-    #5b659c 94%
-  );
-  box-shadow: inset 0 0 30px 10px #373e6b;
-}
-
-.five {
-  background: radial-gradient(
-    #d0b6e3 10%,
-    #bea7d9 30%,
-    #987abb 70%,
-    #8c6cae 76%,
-    #8664a6 90%,
-    #7f5b9c 94%
-  );
-  box-shadow: inset 0 0 30px 10px #48376b;
-}
-
-.six {
-  background: radial-gradient(
-    #d5e3b6 10%,
-    #d2d9a7 30%,
-    #b3bb7a 70%,
-    #a5ad5d 76%,
-    #9aa252 90%,
-    #8a9644 94%
-  );
-  box-shadow: inset 0 0 30px 10px #7a8421;
-}
-
-.glass {
+.square-bg {
   width: 100%;
   height: 100%;
   z-index: 1;
-  border: 1px solid #727d83;
 }
 
 .status {
