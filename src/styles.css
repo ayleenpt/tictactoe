@@ -16,6 +16,7 @@
 }
 
 .board {
+  position: relative;
   aspect-ratio: 1 / 1;
   height: 75svw;
   width: auto;
@@ -66,5 +67,12 @@
 
 .restart {
   position: absolute;
-  bottom: 25px;
+  z-index: 1000;
+  aspect-ratio: 2 / 1;
+  height: 20svh;
+  width: auto;
+  max-width: 36svw;
+  max-height: 18svw;
+  border: none;
+  border-radius: 15px;
 }
