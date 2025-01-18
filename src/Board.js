@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import Glass from './glass.png';
 import X from './x.png';
 import O from './o.png';
@@ -12,30 +12,51 @@ function Square ({ className, value, onSquareClick }) {
       className={`square ${className}`}
       onClick={onSquareClick}
     >
-      <img src={glass} className="glass"/>
+      <img src={glass} alt="glass" className="glass"/>
     </div>
   );
 }
 
 function Board() {
-  const [xIsNext, setXIsNext] = useState(true);
+  const [usersTurn, setUsersTurn] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
   function handleClick(i) {
-    if (squares[i] || winner) return;
-
-    const nextSquares = squares.slice(); // Create a new array to avoid mutating state directly
-    nextSquares[i] = xIsNext ? "X" : "O";
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    if (!usersTurn || squares[i] || winner) return;
+    const newSquares = [...squares]; // Create a copy of the squares array
+    newSquares[i] = "X";
+    setSquares(newSquares);
+    setUsersTurn(false);
   }
 
   function handleRestart() {
-    setSquares(Array(9).fill(null)); // Reset the squares
-    setXIsNext(true); // Reset the turn to X
+    setSquares(Array(9).fill(null));
+    setUsersTurn(true);
   }
+
+  function computersTurn() {
+    let availableSpaces = squares
+      .map((value, index) => (value === undefined || value === null ? index : null))
+      .filter(index => index !== null);
+
+    const chosenSpace = availableSpaces[Math.floor(Math.random() * availableSpaces.length)];
+    const newSquares = [...squares]; // Create a copy of the squares array
+    newSquares[chosenSpace] = "O";
+    setSquares(newSquares);
+    setUsersTurn(true);
+  }
+
+  useEffect(() => {
+    if (!usersTurn && !winner && !full) {
+      const timer = setTimeout(() => {
+        computersTurn();
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [usersTurn, squares, winner, full]);
 
   let status;
   if (winner) status = "Winner: " + winner;
