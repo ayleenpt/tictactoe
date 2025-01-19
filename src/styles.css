@@ -62,13 +62,33 @@
 
 .status {
   position: absolute;
-  top: -150px;
-  font-size: 1em;
-  font-style: bold;
+  top: -50px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em black;
   z-index: 100000;
 }
 
-.restart {
+.pawn-choice {
+  position: absolute;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.choice {
+  z-index: 1000;
+  aspect-ratio: 1 / 1;
+  height: 10svh;
+  width: auto;
+  max-width: 18svw;
+  max-height: 9svw;
+}
+
+.replay {
   position: absolute;
   z-index: 1000;
   aspect-ratio: 2 / 1;
@@ -92,7 +112,7 @@
   text-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
 
-.restart span {
+.replay span {
   color: transparent;
   background-image: linear-gradient(0deg, #82eece -10%, #fafefd 100%);
   -webkit-background-clip: text;
@@ -100,7 +120,7 @@
   filter: drop-shadow(0 2px 2px rgb(0, 102, 73));
 }
 
-.restart::before {
+.replay::before {
   content: "";
   display: block;
   height: 0.125rem;
@@ -116,7 +136,7 @@
   background-image: linear-gradient(-270deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 20%, #FFFFFF 80%, rgba(255,255,255,0.00) 100%);
 }
 
-.restart::after {
+.replay::after {
   content: "";
   display: block;
   height: 0.125rem;
@@ -133,28 +153,28 @@
   background-image: linear-gradient(-270deg, rgba(255,255,255,0.00) 0%, #FFFFFF 20%, #FFFFFF 80%, rgba(255,255,255,0.00) 100%);
 }
 
-.restart:hover {
+.replay:hover {
   filter: brightness(1.1);
 }
 
-.restart:active {
+.replay:active {
   transform: scale(.96);
 }
 
 @media (max-width: 650px) {
-  .restart {
+  .replay {
     font-size: 1.5rem;
   }
 }
 
 @media (max-width: 650px) {
-  .restart {
+  .replay {
     font-size: 1.5rem;
   }
 }
 
 @media (max-width: 475px) {
-  .restart {
+  .replay {
     font-size: 1rem;
   }
 }

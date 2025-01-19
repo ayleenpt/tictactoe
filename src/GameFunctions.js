@@ -10,7 +10,7 @@ const winPaths = [
 ];
 
 export function getFirstMove(squares, opponent) {
-  if (opponent === opponent) {
+  if (opponent === "X") {
     if (squares[4]) return [0, 2, 6, 8][Math.floor(Math.random() * 4)];
     else return 4;
   }

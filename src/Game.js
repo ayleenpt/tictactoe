@@ -13,23 +13,33 @@ import {
 let status;
 
 function Game() {
-  const [usersTurn, setUsersTurn] = useState(true);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [usersTurn, setUsersTurn] = useState(null);
   const [firstMove, setFirstMove] = useState(true);
+  const [userPawn, setUserPawn] = useState(null);
+  const [computerPawn, setComputerPawn] = useState(null);
   const [squares, setSquares] = useState(Array(9).fill(null));
-  const [showRestart, setShowRestart] = useState(false);
+  const [showReplay, setShowReplay] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [userPawn, setuserPawn] = useState("X");
-  const [computerPawn, setcomputerPawn] = useState("O");
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
+  function setPawn(pawn) {
+    setUserPawn(pawn);
+    setComputerPawn(pawn === "X" ? "O" : "X");
+    setUsersTurn(pawn === "X" ? true : false);
+    setGameStarted(true);
+  }
+
   function playersTurn(chosenSpace) {
-    if (!usersTurn || squares[chosenSpace] || winner) return;
+    status = "user: " + userPawn + " | computer: " + computerPawn;
+    if (!usersTurn || squares[chosenSpace] || winner || !gameStarted) return;
     endTurn(chosenSpace, userPawn);
   }
 
   function computersTurn() {
-    if (usersTurn || winner) return;
+    status = "user: " + userPawn + " | computer: " + computerPawn;
+    if (usersTurn || winner || !gameStarted) return;
     let chosenSpace = null;
 
     if (firstMove) {
@@ -52,11 +62,12 @@ function Game() {
     setUsersTurn(!usersTurn);
   }
 
-  function handleRestart() {
+  function handleReplay() {
     setSquares(Array(9).fill(null));
-    setUsersTurn(true);
+    setUsersTurn(null);
     setFirstMove(true);
-    setShowRestart(false);
+    setShowReplay(false);
+    setGameStarted(false);
     setGameOver(false);
   }
 
@@ -73,7 +84,7 @@ function Game() {
   useEffect(() => {
     if (winner || full) {
       const timer = setTimeout(() => {
-        setShowRestart(true);
+        setShowReplay(true);
       }, 800);
 
       return () => clearTimeout(timer);
@@ -87,13 +98,18 @@ function Game() {
     setSquares(newSquares);
   }
 
-  if (winner && !gameOver) {
-    status = winner.toString();
-    setWinner();
-  }
+  if (winner && !gameOver) setWinner();
 
   return (
     <div className="board">
+      <div>
+        { !gameStarted && (
+          <div  className="pawn-choice">
+            <button className="choice choose-x" onClick={() => setPawn("X")}>X</button>
+            <button className="choice choose-o" onClick={() => setPawn("O")}>O</button>
+          </div>
+        )}
+      </div>
       <div className="status">{status}</div>
       <div className="board-row">
         <Square index={0} value={squares[0]} onSquareClick={() => playersTurn(0)} />
@@ -110,9 +126,9 @@ function Game() {
         <Square index={7} value={squares[7]} onSquareClick={() => playersTurn(7)} />
         <Square index={8} value={squares[8]} onSquareClick={() => playersTurn(8)} />
       </div>
-      { (winner || full) && showRestart && (
-        <button className="restart" onClick={handleRestart}>
-          restart
+      { (winner || full) && showReplay && (
+        <button className="replay" onClick={handleReplay}>
+          replay
         </button>
       )}
     </div>
