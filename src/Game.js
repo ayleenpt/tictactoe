@@ -88,8 +88,8 @@ function Game() {
       <div>
         { !gameStarted && (
           <div  className="pawn-choice">
-            <button className="choice choose-x" onClick={() => setPawn("X")}>X</button>
-            <button className="choice choose-o" onClick={() => setPawn("O")}>O</button>
+            <button className="choice button" onClick={() => setPawn("X")}>X</button>
+            <button className="choice button" onClick={() => setPawn("O")}>O</button>
           </div>
         )}
       </div>
@@ -109,7 +109,7 @@ function Game() {
         <Square index={8} value={squares[8]} onSquareClick={() => playersTurn(8)} />
       </div>
       { (winner || full) && showReplay && (
-        <button className="replay" onClick={handleReplay}>
+        <button className="replay button" onClick={handleReplay}>
           replay
         </button>
       )}
