@@ -23,12 +23,9 @@ function Game() {
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
-  function playersTurn(i) {
-    if (!usersTurn || squares[i] || winner) return;
-    const newSquares = [...squares]; 
-    newSquares[i] = "X";
-    setSquares(newSquares);
-    setUsersTurn(false);
+  function playersTurn(chosenSpace) {
+    if (!usersTurn || squares[chosenSpace] || winner) return;
+    endTurn(chosenSpace, userPawn);
   }
 
   function computersTurn() {
@@ -41,21 +38,18 @@ function Game() {
     }
 
     if (chosenSpace === null) chosenSpace = win(squares);
-    if (chosenSpace === null)  chosenSpace = block(squares);
-    if (chosenSpace === null) {
-      chosenSpace = getPathOfTwo(squares, userPawn, computerPawn);
-      status = "next: " + chosenSpace + " !";
-    }
+    if (chosenSpace === null) chosenSpace = block(squares);
+    if (chosenSpace === null) chosenSpace = getPathOfTwo(squares, userPawn, computerPawn);
+    if (chosenSpace === null) chosenSpace = getRandomMove(squares);
 
-    if (chosenSpace === null) {
-      chosenSpace = getRandomMove(squares);
-      status = "random: " + chosenSpace + " !";
-    }
+    endTurn(chosenSpace, computerPawn);
+  }
 
+  function endTurn(chosenSpace, pawn) {
     const newSquares = [...squares];
-    newSquares[chosenSpace] = computerPawn;
+    newSquares[chosenSpace] = pawn;
     setSquares(newSquares);
-    setUsersTurn(true);
+    setUsersTurn(!usersTurn);
   }
 
   function handleRestart() {
