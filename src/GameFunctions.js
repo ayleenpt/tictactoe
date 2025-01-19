@@ -9,12 +9,17 @@ const winPaths = [
   [2, 4, 6]
 ];
 
-export function getFirstMove(squares, opponent) {
-  if (opponent === "X") {
+export function playAsO(squares, self, opponent, firstMove) {
+  if (firstMove) {
     if (squares[4]) return [0, 2, 6, 8][Math.floor(Math.random() * 4)];
     else return 4;
   }
-  return null;
+  let chosenSpace = null;
+  if (chosenSpace === null) chosenSpace = win(squares, opponent, self);
+  if (chosenSpace === null) chosenSpace = block(squares, opponent, self);
+  if (chosenSpace === null) chosenSpace = getPathOfTwo(squares, opponent, self);
+  if (chosenSpace === null) chosenSpace = getRandomMove(squares);
+  return chosenSpace;
 }
 
 export function win(squares, opponent, self) {

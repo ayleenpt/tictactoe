@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 import Square from './Square';
 import { 
-  getFirstMove, 
-  win, 
-  block, 
-  getPathOfTwo, 
-  getRandomMove, 
+  playAsO, 
   isBoardFull, 
   calculateWinner 
 } from './GameFunctions'
@@ -16,7 +12,7 @@ function Game() {
   const [gameStarted, setGameStarted] = useState(false);
   const [usersTurn, setUsersTurn] = useState(null);
   const [firstMove, setFirstMove] = useState(true);
-  const [userPawn, setUserPawn] = useState(null);
+  const [playerPawn, setPlayerPawn] = useState(null);
   const [computerPawn, setComputerPawn] = useState(null);
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [showReplay, setShowReplay] = useState(false);
@@ -25,32 +21,25 @@ function Game() {
   const winner = calculateWinner(squares);
 
   function setPawn(pawn) {
-    setUserPawn(pawn);
+    setPlayerPawn(pawn);
     setComputerPawn(pawn === "X" ? "O" : "X");
     setUsersTurn(pawn === "X" ? true : false);
     setGameStarted(true);
   }
 
   function playersTurn(chosenSpace) {
-    status = "user: " + userPawn + " | computer: " + computerPawn;
+    status = "user: " + playerPawn + " | computer: " + computerPawn;
     if (!usersTurn || squares[chosenSpace] || winner || !gameStarted) return;
-    endTurn(chosenSpace, userPawn);
+    endTurn(chosenSpace, playerPawn);
   }
 
   function computersTurn() {
-    status = "user: " + userPawn + " | computer: " + computerPawn;
+    status = "user: " + playerPawn + " | computer: " + computerPawn;
     if (usersTurn || winner || !gameStarted) return;
-    let chosenSpace = null;
 
-    if (firstMove) {
-      chosenSpace = getFirstMove(squares, userPawn);
-      setFirstMove(false);
-    }
-
-    if (chosenSpace === null) chosenSpace = win(squares, userPawn, computerPawn);
-    if (chosenSpace === null) chosenSpace = block(squares, userPawn, computerPawn);
-    if (chosenSpace === null) chosenSpace = getPathOfTwo(squares, userPawn, computerPawn);
-    if (chosenSpace === null) chosenSpace = getRandomMove(squares);
+    let chosenSpace;
+    if (computerPawn == "O") chosenSpace = playAsO(squares, computerPawn, playerPawn, firstMove);
+    if (firstMove) setFirstMove(false);
 
     endTurn(chosenSpace, computerPawn);
   }
@@ -91,7 +80,7 @@ function Game() {
   useEffect(() => {
     if (winner || full) {
       const timer = setTimeout(() => {
-        setWinner();
+        if (winner) setWinner();
         setShowReplay(true);
       }, 800);
 
