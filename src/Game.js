@@ -11,13 +11,12 @@ let status;
 
 function Game() {
   const [gameStarted, setGameStarted] = useState(false);
-  const [usersTurn, setUsersTurn] = useState(null);
-  const [firstMove, setFirstMove] = useState(true);
   const [playerPawn, setPlayerPawn] = useState(null);
   const [computerPawn, setComputerPawn] = useState(null);
+  const [usersTurn, setUsersTurn] = useState(null);
+  const [firstMove, setFirstMove] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [showReplay, setShowReplay] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
@@ -54,19 +53,17 @@ function Game() {
   }
 
   function setWinner() {
-    setGameOver(true);
     const newSquares = Array(9).fill(null);
     for (let i = 0; i < 3; i++) newSquares[winner[i]] = squares[winner[i]];
     setSquares(newSquares);
   }
 
   function handleReplay() {
-    setSquares(Array(9).fill(null));
+    setGameStarted(false);
     setUsersTurn(null);
     setFirstMove(true);
     setShowReplay(false);
-    setGameStarted(false);
-    setGameOver(false);
+    setSquares(Array(9).fill(null));
   }
 
   useEffect(() => {
