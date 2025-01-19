@@ -9,24 +9,10 @@ const winPaths = [
   [2, 4, 6]
 ];
 
-export function getFirstMove(squares) {
-  const xMove = squares.indexOf("X");
-
-  // if x is in the center, start in the corner
-  if (xMove === 4) {
-    // status = "x in center, start in corner"
-    const corners = [0, 2, 6, 8];
-    return corners[Math.floor(Math.random() * 4)];
-
-  // if x is in a corner, start in the center
-  } else if (xMove === 0 || xMove === 2 || xMove === 6 || xMove === 8) {
-    // status = "x in corner, start in center"
-    return 4;
-  
-  // if x is on an edge that isn't a corner, start in the center
-  } else {
-    // status = "x on edge, start in center"
-    return 4;
+export function getFirstMove(squares, opponent) {
+  if (opponent === "X") {
+    if (squares[4]) return [0, 2, 6, 8][Math.floor(Math.random() * 4)];
+    else return 4;
   }
 }
 
@@ -67,6 +53,10 @@ export function block(squares) {
   }
   // status = "no block or win found"
   return null;
+}
+
+export function getNextMove(squares) {
+
 }
 
 export function isBoardFull(squares) {

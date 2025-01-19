@@ -16,6 +16,7 @@ function Game() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [showRestart, setShowRestart] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [userPawn, setuserPawn] = useState("X");
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
@@ -29,37 +30,23 @@ function Game() {
     status = squares.toString();
   }
 
-  function handleRestart() {
-    setSquares(Array(9).fill(null));
-    setUsersTurn(true);
-    setFirstMove(true);
-    setShowRestart(false);
-    setGameOver(false);
-  }
-
   function computersTurn() {
     status = squares.toString();
     if (usersTurn || winner) return;
 
     let chosenSpace;
 
-    // first move, decide sequence to win or draw based on users first move
     if (firstMove) {
-      chosenSpace = getFirstMove(squares);
+      chosenSpace = getFirstMove(squares, userPawn);
+      status = "chose first move: " + chosenSpace + " !";
       setFirstMove(false);
     }
 
-    // if it's not the first move, try to win
-    if (!chosenSpace) chosenSpace = win(squares);
+    if (chosenSpace === -1) chosenSpace = win(squares);
+    if (chosenSpace === -1) chosenSpace = block(squares);
+    if (chosenSpace === -1) console.log("get 2 in a row");
 
-    // try to block X if O can not win
-    if (!chosenSpace) chosenSpace = block(squares);
-
-    // if no need to block X, try to get two in a row
-    if (!chosenSpace) console.log("get 2 in a row");
-
-    // get random space if there is no way to win or block X
-    if (!chosenSpace) {
+    if (chosenSpace === -1) {
       let availableSpaces = squares
       .map((value, index) => (value === undefined || value === null ? index : null))
       .filter(index => index !== null);
@@ -70,7 +57,14 @@ function Game() {
     newSquares[chosenSpace] = "O";
     setSquares(newSquares);
     setUsersTurn(true);
-    status = squares.toString();
+  }
+
+  function handleRestart() {
+    setSquares(Array(9).fill(null));
+    setUsersTurn(true);
+    setFirstMove(true);
+    setShowRestart(false);
+    setGameOver(false);
   }
 
   useEffect(() => {
