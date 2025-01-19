@@ -40,6 +40,7 @@ const Os = [
 
 function Square ({ index, value, onSquareClick }) {
   let background = backgrounds[index];
+  if (value === null || value === undefined) background = backgrounds[index];
   if (value === "X") background = Xs[index];
   if (value === "O") background = Os[index];
   return (

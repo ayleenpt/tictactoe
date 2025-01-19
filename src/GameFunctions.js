@@ -80,7 +80,7 @@ export function calculateWinner(squares) {
   for (let i = 0; i < winPaths.length; i++) {
     const [a, b, c] = winPaths[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return winPaths[i];
     }
   }
   return null;

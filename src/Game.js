@@ -8,20 +8,25 @@ import {
   calculateWinner 
 } from './GameFunctions'
 
+let status;
+
 function Game() {
   const [usersTurn, setUsersTurn] = useState(true);
   const [firstMove, setFirstMove] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [showRestart, setShowRestart] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
   function handleClick(i) {
+    status = squares.toString();
     if (!usersTurn || squares[i] || winner) return;
     const newSquares = [...squares]; 
     newSquares[i] = "X";
     setSquares(newSquares);
     setUsersTurn(false);
+    status = squares.toString();
   }
 
   function handleRestart() {
@@ -32,6 +37,7 @@ function Game() {
   }
 
   function computersTurn() {
+    status = squares.toString();
     if (usersTurn || winner) return;
 
     let chosenSpace;
@@ -63,6 +69,7 @@ function Game() {
     newSquares[chosenSpace] = "O";
     setSquares(newSquares);
     setUsersTurn(true);
+    status = squares.toString();
   }
 
   useEffect(() => {
@@ -85,8 +92,21 @@ function Game() {
     }
   }, [winner, full]);
 
+  function setWinner() {
+    const newSquares = Array(9).fill(null);
+    for (let i = 0; i < 3; i++) newSquares[winner[i]] = squares[winner[i]];
+    setSquares(newSquares);
+    setGameOver(true);
+  }
+
+  if (winner && !gameOver) {
+    status = winner.toString();
+    setWinner();
+  }
+
   return (
     <div className="board">
+      <div className="status">{status}</div>
       <div className="board-row">
         <Square index={0} value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square index={1} value={squares[1]} onSquareClick={() => handleClick(1)} />

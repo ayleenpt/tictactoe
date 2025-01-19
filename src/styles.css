@@ -62,17 +62,20 @@
 
 .status {
   position: absolute;
-  top: 25px;
+  top: -150px;
+  font-size: 1em;
+  font-style: bold;
+  z-index: 100000;
 }
 
 .restart {
   position: absolute;
   z-index: 1000;
   aspect-ratio: 2 / 1;
-  height: 20svh;
+  height: 10svh;
   width: auto;
-  max-width: 36svw;
-  max-height: 18svw;
+  max-width: 18svw;
+  max-height: 9svw;
   border-radius: 15px;
   background-color: #3c847d;
   touch-action: manipulation;
@@ -136,4 +139,22 @@
 
 .restart:active {
   transform: scale(.96);
+}
+
+@media (max-width: 650px) {
+  .restart {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .restart {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 475px) {
+  .restart {
+    font-size: 1rem;
+  }
 }
