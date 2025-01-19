@@ -19,7 +19,7 @@ function Game() {
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
-  function handleClick(i) {
+  function playersTurn(i) {
     status = squares.toString();
     if (!usersTurn || squares[i] || winner) return;
     const newSquares = [...squares]; 
@@ -109,19 +109,19 @@ function Game() {
     <div className="board">
       <div className="status">{status}</div>
       <div className="board-row">
-        <Square index={0} value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square index={1} value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square index={2} value={squares[2]} onSquareClick={() => handleClick(2)} />
+        <Square index={0} value={squares[0]} onSquareClick={() => playersTurn(0)} />
+        <Square index={1} value={squares[1]} onSquareClick={() => playersTurn(1)} />
+        <Square index={2} value={squares[2]} onSquareClick={() => playersTurn(2)} />
       </div>
       <div className="board-row">
-        <Square index={3} value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square index={4} value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square index={5} value={squares[5]} onSquareClick={() => handleClick(5)} />
+        <Square index={3} value={squares[3]} onSquareClick={() => playersTurn(3)} />
+        <Square index={4} value={squares[4]} onSquareClick={() => playersTurn(4)} />
+        <Square index={5} value={squares[5]} onSquareClick={() => playersTurn(5)} />
       </div>
       <div className="board-row">
-        <Square index={6} value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square index={7} value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square index={8} value={squares[8]} onSquareClick={() => handleClick(8)} />
+        <Square index={6} value={squares[6]} onSquareClick={() => playersTurn(6)} />
+        <Square index={7} value={squares[7]} onSquareClick={() => playersTurn(7)} />
+        <Square index={8} value={squares[8]} onSquareClick={() => playersTurn(8)} />
       </div>
       { (winner || full) && showRestart && (
         <button className="restart" onClick={handleRestart}>
