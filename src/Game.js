@@ -34,6 +34,7 @@ function Game() {
     setUsersTurn(true);
     setFirstMove(true);
     setShowRestart(false);
+    setGameOver(false);
   }
 
   function computersTurn() {
@@ -93,10 +94,10 @@ function Game() {
   }, [winner, full]);
 
   function setWinner() {
+    setGameOver(true);
     const newSquares = Array(9).fill(null);
     for (let i = 0; i < 3; i++) newSquares[winner[i]] = squares[winner[i]];
     setSquares(newSquares);
-    setGameOver(true);
   }
 
   if (winner && !gameOver) {
