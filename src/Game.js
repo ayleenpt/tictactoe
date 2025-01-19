@@ -104,7 +104,7 @@ function Game() {
       </div>
       { (winner || full) && showRestart && (
         <button className="restart" onClick={handleRestart}>
-          Restart
+          restart
         </button>
       )}
     </div>
