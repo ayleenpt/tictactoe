@@ -10,29 +10,29 @@ const winPaths = [
 ];
 
 export function getFirstMove(squares, opponent) {
-  if (opponent === "X") {
+  if (opponent === opponent) {
     if (squares[4]) return [0, 2, 6, 8][Math.floor(Math.random() * 4)];
     else return 4;
   }
   return null;
 }
 
-export function win(squares) {
+export function win(squares, opponent, self) {
   for (let i = 0; i < winPaths.length; i++) {
     const [a, b, c] = winPaths[i];
-    if ( squares[a] === "O" && squares[b] === "O" && squares[c] !== "X" ) return c;
-    if ( squares[b] === "O" && squares[c] === "O" && squares[a] !== "X" ) return a;
-    if ( squares[c] === "O" && squares[a] === "O" && squares[b] !== "X" ) return b;
+    if ( squares[a] === self && squares[b] === self && squares[c] !== opponent ) return c;
+    if ( squares[b] === self && squares[c] === self && squares[a] !== opponent ) return a;
+    if ( squares[c] === self && squares[a] === self && squares[b] !== opponent ) return b;
   }
   return null;
 }
 
-export function block(squares) {
+export function block(squares, opponent, self) {
   for (let i = 0; i < winPaths.length; i++) {
     const [a, b, c] = winPaths[i];
-    if ( squares[a] === "X" && squares[b] === "X" && squares[c] !== "O" ) return c;
-    if ( squares[b] === "X" && squares[c] === "X" && squares[a] !== "O" ) return a;
-    if ( squares[c] === "X" && squares[a] === "X" && squares[b] !== "O" ) return b;
+    if ( squares[a] === opponent && squares[b] === opponent && squares[c] !== self ) return c;
+    if ( squares[b] === opponent && squares[c] === opponent && squares[a] !== self ) return a;
+    if ( squares[c] === opponent && squares[a] === opponent && squares[b] !== self ) return b;
   }
   return null;
 }

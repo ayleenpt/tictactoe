@@ -37,8 +37,8 @@ function Game() {
       setFirstMove(false);
     }
 
-    if (chosenSpace === null) chosenSpace = win(squares);
-    if (chosenSpace === null) chosenSpace = block(squares);
+    if (chosenSpace === null) chosenSpace = win(squares, userPawn, computerPawn);
+    if (chosenSpace === null) chosenSpace = block(squares, userPawn, computerPawn);
     if (chosenSpace === null) chosenSpace = getPathOfTwo(squares, userPawn, computerPawn);
     if (chosenSpace === null) chosenSpace = getRandomMove(squares);
 
