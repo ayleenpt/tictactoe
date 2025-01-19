@@ -62,6 +62,13 @@ function Game() {
     setUsersTurn(!usersTurn);
   }
 
+  function setWinner() {
+    setGameOver(true);
+    const newSquares = Array(9).fill(null);
+    for (let i = 0; i < 3; i++) newSquares[winner[i]] = squares[winner[i]];
+    setSquares(newSquares);
+  }
+
   function handleReplay() {
     setSquares(Array(9).fill(null));
     setUsersTurn(null);
@@ -84,21 +91,13 @@ function Game() {
   useEffect(() => {
     if (winner || full) {
       const timer = setTimeout(() => {
+        setWinner();
         setShowReplay(true);
       }, 800);
 
       return () => clearTimeout(timer);
     }
   }, [winner, full]);
-
-  function setWinner() {
-    setGameOver(true);
-    const newSquares = Array(9).fill(null);
-    for (let i = 0; i < 3; i++) newSquares[winner[i]] = squares[winner[i]];
-    setSquares(newSquares);
-  }
-
-  if (winner && !gameOver) setWinner();
 
   return (
     <div className="board">
