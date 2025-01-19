@@ -7,8 +7,6 @@ import {
   calculateWinner 
 } from './GameFunctions'
 
-let status;
-
 function Game() {
   const [gameStarted, setGameStarted] = useState(false);
   const [playerPawn, setPlayerPawn] = useState(null);
@@ -28,13 +26,11 @@ function Game() {
   }
 
   function playersTurn(chosenSpace) {
-    status = "user: " + playerPawn + " | computer: " + computerPawn;
     if (!usersTurn || squares[chosenSpace] || winner || !gameStarted) return;
     endTurn(chosenSpace, playerPawn);
   }
 
   function computersTurn() {
-    status = "user: " + playerPawn + " | computer: " + computerPawn;
     if (usersTurn || winner || !gameStarted) return;
 
     let chosenSpace;
@@ -97,7 +93,6 @@ function Game() {
           </div>
         )}
       </div>
-      <div className="status">{status}</div>
       <div className="board-row">
         <Square index={0} value={squares[0]} onSquareClick={() => playersTurn(0)} />
         <Square index={1} value={squares[1]} onSquareClick={() => playersTurn(1)} />

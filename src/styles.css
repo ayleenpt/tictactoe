@@ -13,6 +13,7 @@
   background-repeat: repeat repeat;
   background-position: -50px -50px;
   background-size: auto;
+  position: relative;
 }
 
 .board {
@@ -60,32 +61,29 @@
   z-index: 1;
 }
 
-.status {
-  position: absolute;
-  top: -50px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em black;
-  z-index: 100000;
-}
-
 .pawn-choice {
   position: absolute;
+  aspect-ratio: 1 / 1;
+  height: 75svw;
+  width: auto;
+  max-height: 90svh;
+  max-width: 90svw;
   z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5svw;
   height: 100%;
+  left: 0;
 }
 
 .choice {
   z-index: 1000;
   aspect-ratio: 1 / 1;
-  height: 10svh;
+  height: 20svh;
   width: auto;
   max-width: 18svw;
-  max-height: 9svw;
+  max-height: 19svw;
 }
 
 .replay {
