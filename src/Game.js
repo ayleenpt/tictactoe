@@ -4,6 +4,8 @@ import {
   getFirstMove, 
   win, 
   block, 
+  getPathOfTwo, 
+  getRandomMove, 
   isBoardFull, 
   calculateWinner 
 } from './GameFunctions'
@@ -17,44 +19,41 @@ function Game() {
   const [showRestart, setShowRestart] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [userPawn, setuserPawn] = useState("X");
+  const [computerPawn, setcomputerPawn] = useState("O");
   const full = isBoardFull(squares);
   const winner = calculateWinner(squares);
 
   function playersTurn(i) {
-    status = squares.toString();
     if (!usersTurn || squares[i] || winner) return;
     const newSquares = [...squares]; 
     newSquares[i] = "X";
     setSquares(newSquares);
     setUsersTurn(false);
-    status = squares.toString();
   }
 
   function computersTurn() {
-    status = squares.toString();
     if (usersTurn || winner) return;
-
-    let chosenSpace;
+    let chosenSpace = null;
 
     if (firstMove) {
       chosenSpace = getFirstMove(squares, userPawn);
-      status = "chose first move: " + chosenSpace + " !";
       setFirstMove(false);
     }
 
-    if (chosenSpace === -1) chosenSpace = win(squares);
-    if (chosenSpace === -1) chosenSpace = block(squares);
-    if (chosenSpace === -1) console.log("get 2 in a row");
+    if (chosenSpace === null) chosenSpace = win(squares);
+    if (chosenSpace === null)  chosenSpace = block(squares);
+    if (chosenSpace === null) {
+      chosenSpace = getPathOfTwo(squares, userPawn, computerPawn);
+      status = "next: " + chosenSpace + " !";
+    }
 
-    if (chosenSpace === -1) {
-      let availableSpaces = squares
-      .map((value, index) => (value === undefined || value === null ? index : null))
-      .filter(index => index !== null);
-      chosenSpace = availableSpaces[Math.floor(Math.random() * availableSpaces.length)];
+    if (chosenSpace === null) {
+      chosenSpace = getRandomMove(squares);
+      status = "random: " + chosenSpace + " !";
     }
 
     const newSquares = [...squares];
-    newSquares[chosenSpace] = "O";
+    newSquares[chosenSpace] = computerPawn;
     setSquares(newSquares);
     setUsersTurn(true);
   }

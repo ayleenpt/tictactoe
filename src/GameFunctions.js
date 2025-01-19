@@ -14,49 +14,44 @@ export function getFirstMove(squares, opponent) {
     if (squares[4]) return [0, 2, 6, 8][Math.floor(Math.random() * 4)];
     else return 4;
   }
+  return null;
 }
 
 export function win(squares) {
   for (let i = 0; i < winPaths.length; i++) {
     const [a, b, c] = winPaths[i];
-    if ( squares[a] === "O" && squares[b] === "O" && squares[c] !== "X" ) {
-      // status = `Winning path: ${winPaths[i]} - O O _`;
-      return c;
-    }
-    if ( squares[b] === "O" && squares[c] === "O" && squares[a] !== "X" ) {
-      // status = `Winning path: ${winPaths[i]} - _ O O`;
-      return a;
-    }
-    if ( squares[c] === "O" && squares[a] === "O" && squares[b] !== "X" ) {
-      // status = `Winning path: ${winPaths[i]} - O _ O`;
-      return b;
-    }
+    if ( squares[a] === "O" && squares[b] === "O" && squares[c] !== "X" ) return c;
+    if ( squares[b] === "O" && squares[c] === "O" && squares[a] !== "X" ) return a;
+    if ( squares[c] === "O" && squares[a] === "O" && squares[b] !== "X" ) return b;
   }
-  return null
+  return null;
 }
 
 export function block(squares) {
   for (let i = 0; i < winPaths.length; i++) {
     const [a, b, c] = winPaths[i];
-    if ( squares[a] === "X" && squares[b] === "X" && squares[c] !== "O" ) {
-      // status = `Blocking path: ${winPaths[i]} - X X _`;
-      return c;
-    }
-    if ( squares[b] === "X" && squares[c] === "X" && squares[a] !== "O" ) {
-      // status = `Blocking path: ${winPaths[i]} - _ X X`;
-      return a;
-    }
-    if ( squares[c] === "X" && squares[a] === "X" && squares[b] !== "O" ) {
-      // status = `Blocking path: ${winPaths[i]} - X _ X`;
-      return b;
-    }
+    if ( squares[a] === "X" && squares[b] === "X" && squares[c] !== "O" ) return c;
+    if ( squares[b] === "X" && squares[c] === "X" && squares[a] !== "O" ) return a;
+    if ( squares[c] === "X" && squares[a] === "X" && squares[b] !== "O" ) return b;
   }
-  // status = "no block or win found"
   return null;
 }
 
-export function getNextMove(squares) {
+export function getPathOfTwo(squares, opponent, self) {
+  for (let i = 0; i < winPaths.length; i++) {
+    const [a, b, c] = winPaths[i];
+    if (squares[a] === self && squares[b] !== opponent && squares[c] !== opponent) return c;
+    if (squares[b] === self && squares[c] !== opponent && squares[a] !== opponent) return c;
+    if (squares[c] === self && squares[a] !== opponent && squares[b] !== opponent) return b;
+  }
+  return null;
+}
 
+export function getRandomMove(squares) {
+  let availableSpaces = squares
+  .map((value, index) => (value === undefined || value === null ? index : null))
+  .filter(index => index !== null);
+  return availableSpaces[Math.floor(Math.random() * availableSpaces.length)];
 }
 
 export function isBoardFull(squares) {
