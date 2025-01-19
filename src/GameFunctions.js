@@ -9,15 +9,29 @@ const winPaths = [
   [2, 4, 6]
 ];
 
+const triangles = [
+  [0, 2, 6],
+  [0, 6, 8],
+  [2, 6, 8],
+  [0, 2, 8]
+]
+
 export function playAsO(squares, self, opponent, firstMove) {
-  if (firstMove) {
-    if (squares[4]) return [0, 2, 6, 8][Math.floor(Math.random() * 4)];
-    else return 4;
-  }
+  if (firstMove) return squares[4] ? [0, 2, 6, 8][Math.floor(Math.random() * 4)] : 4;
   let chosenSpace = null;
   if (chosenSpace === null) chosenSpace = win(squares, opponent, self);
   if (chosenSpace === null) chosenSpace = block(squares, opponent, self);
   if (chosenSpace === null) chosenSpace = getPathOfTwo(squares, opponent, self);
+  if (chosenSpace === null) chosenSpace = getRandomMove(squares);
+  return chosenSpace;
+}
+
+export function playAsX(squares, self, opponent, firstMove) {
+  if (firstMove) return [0, 2, 6, 8][Math.floor(Math.random() * 4)];
+  let chosenSpace = null;
+  if (chosenSpace === null) chosenSpace = win(squares, opponent, self);
+  if (chosenSpace === null) chosenSpace = block(squares, opponent, self);
+  if (chosenSpace === null) chosenSpace = makeTriangle(squares, opponent, self);
   if (chosenSpace === null) chosenSpace = getRandomMove(squares);
   return chosenSpace;
 }
@@ -48,6 +62,20 @@ export function getPathOfTwo(squares, opponent, self) {
     if (squares[a] === self && squares[b] !== opponent && squares[c] !== opponent) return c;
     if (squares[b] === self && squares[c] !== opponent && squares[a] !== opponent) return c;
     if (squares[c] === self && squares[a] !== opponent && squares[b] !== opponent) return b;
+  }
+  return null;
+}
+
+export function makeTriangle(squares, opponent, self) {
+  if (squares[4] === opponent) return null;
+  for (let i = 0; i < 4; i++) {
+    const [a, b, c] = triangles[i];
+    if (squares[a] === self && squares[b] === self && squares[c] !== opponent) return c;
+    if (squares[a] === self && squares[b] !== opponent && squares[c] === self) return b;
+    if (squares[a] !== opponent && squares[b] === self && squares[c] === self) return a;
+    if (squares[a] === self && squares[b] !== opponent && squares[c] !== opponent) return c;
+    if (squares[a] !== opponent && squares[b] !== opponent && squares[c] === self) return b;
+    if (squares[a] !== opponent && squares[b] === self && squares[c] !== opponent) return a;
   }
   return null;
 }

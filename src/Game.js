@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Square from './Square';
 import { 
   playAsO, 
+  playAsX, 
   isBoardFull, 
   calculateWinner 
 } from './GameFunctions'
@@ -39,6 +40,7 @@ function Game() {
 
     let chosenSpace;
     if (computerPawn == "O") chosenSpace = playAsO(squares, computerPawn, playerPawn, firstMove);
+    else chosenSpace = playAsX(squares, computerPawn, playerPawn, firstMove);
     if (firstMove) setFirstMove(false);
 
     endTurn(chosenSpace, computerPawn);
