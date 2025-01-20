@@ -79,10 +79,10 @@
 
 .choice {
   z-index: 1000;
-  aspect-ratio: 1 / 1;
   height: 20svh;
-  width: auto;
+  width: 20svh;
   max-height: 18svw;
+  max-width: 18svw;
   font-size: 6rem;
 }
 
