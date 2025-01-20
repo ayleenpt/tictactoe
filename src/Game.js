@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Square from './Square';
 import { 
   playAsO, 
@@ -25,34 +25,34 @@ function Game() {
     setGameStarted(true);
   }
 
+  const endTurn = useCallback((chosenSpace, pawn) => {
+    const newSquares = [...squares];
+    newSquares[chosenSpace] = pawn;
+    setSquares(newSquares);
+    setUsersTurn(!usersTurn);
+  }, [squares, usersTurn]);
+
   function playersTurn(chosenSpace) {
     if (!usersTurn || squares[chosenSpace] || winner || !gameStarted) return;
     endTurn(chosenSpace, playerPawn);
   }
 
-  function computersTurn() {
+  const computersTurn = useCallback(() => {
     if (usersTurn || winner || !gameStarted) return;
 
     let chosenSpace;
-    if (computerPawn == "O") chosenSpace = playAsO(squares, computerPawn, playerPawn, firstMove);
+    if (computerPawn === "O") chosenSpace = playAsO(squares, computerPawn, playerPawn, firstMove);
     else chosenSpace = playAsX(squares, computerPawn, playerPawn, firstMove);
     if (firstMove) setFirstMove(false);
 
     endTurn(chosenSpace, computerPawn);
-  }
+  }, [usersTurn, winner, gameStarted, computerPawn, playerPawn, firstMove, squares, endTurn]);
 
-  function endTurn(chosenSpace, pawn) {
-    const newSquares = [...squares];
-    newSquares[chosenSpace] = pawn;
-    setSquares(newSquares);
-    setUsersTurn(!usersTurn);
-  }
-
-  function setWinner() {
+  const setWinner = useCallback(() => {
     const newSquares = Array(9).fill(null);
     for (let i = 0; i < 3; i++) newSquares[winner[i]] = squares[winner[i]];
     setSquares(newSquares);
-  }
+  }, [winner, squares]);
 
   function handleReplay() {
     setGameStarted(false);
@@ -70,7 +70,7 @@ function Game() {
 
       return () => clearTimeout(timer);
     }
-  }, [usersTurn, squares, winner, full]);
+  }, [usersTurn, squares, winner, full, computersTurn]);
 
   useEffect(() => {
     if (winner || full) {
@@ -81,7 +81,7 @@ function Game() {
 
       return () => clearTimeout(timer);
     }
-  }, [winner, full]);
+  }, [winner, setWinner, full]);
 
   return (
     <div className="board">

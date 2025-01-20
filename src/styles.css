@@ -82,8 +82,7 @@
   aspect-ratio: 1 / 1;
   height: 20svh;
   width: auto;
-  max-width: 18svw;
-  max-height: 19svw;
+  max-height: 18svw;
   font-size: 6rem;
 }
 
@@ -158,10 +157,16 @@
   .replay {
     font-size: 1.5rem;
   }
+  .choice {
+    font-size: 4rem;
+  }
 }
 
 @media (max-width: 475px) {
   .replay {
     font-size: 1rem;
+  }
+  .choice {
+    font-size: 3rem;
   }
 }
